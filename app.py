@@ -36,13 +36,8 @@ st.markdown('<div class="subtitle">Tutor Socrático de Contabilidad de Costos �
 with st.sidebar:
     st.header("⚙️ Configuración")
     
-    # Campo seguro para que el usuario ingrese su API Key
-    api_key_usuario = st.text_input(
-        "Ingresa tu Anthropic API Key:",
-        type="password",
-        placeholder="sk-ant-...",
-        help="Obtén tu llave en console.anthropic.com. Tu llave no se guarda en ningún servidor."
-    )
+    # Leemos la llave directamente desde los "Secretos" de Streamlit en la nube
+    api_key_usuario = st.secrets["ANTHROPIC_API_KEY"]
     
     st.divider()
     st.subheader("📚 Material del Curso")
