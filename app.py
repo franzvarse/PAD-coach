@@ -36,8 +36,15 @@ st.markdown('<div class="subtitle">Tutor Socrático de Contabilidad de Costos �
 with st.sidebar:
     st.header("⚙️ Configuración")
     
-    # Leemos la llave directamente desde los "Secretos" de Streamlit en la nube
+    # Leemos la llave de Anthropic en secreto
     api_key_usuario = st.secrets["ANTHROPIC_API_KEY"]
+    
+    # Pedimos la contraseña de la clase al usuario
+    password_ingresado = st.text_input(
+        "Contraseña de acceso:", 
+        type="password", 
+        placeholder="Ingrese la clave de la clase"
+    )
     
     st.divider()
     st.subheader("📚 Material del Curso")
@@ -48,7 +55,6 @@ with st.sidebar:
     )
     
     st.info("Este asistente está programado bajo la metodología del PAD para guiarte de forma socrática. No te dará las respuestas directas, te enseñará a pensar.")
-
 # 3. Cargar la Nota Técnica (Nuestra Base de Conocimientos / RAG Local)
 def cargar_nota_tecnica():
     # Aseguramos que busque la extensión correcta (.md) que corregimos en el paso anterior
@@ -99,9 +105,9 @@ if prompt_usuario := st.chat_input("Ej. ¿Cómo diferencio un costo fijo de uno 
         st.write(prompt_usuario)
     st.session_state.mensajes.append({"role": "user", "content": prompt_usuario})
     
-    # Validar si el usuario ingresó la API Key
-    if not api_key_usuario:
-        st.warning("⚠️ Por favor, ingrese su Anthropic API Key en la barra lateral izquierda para poder interactuar.")
+    # Validar si la contraseña ingresada coincide con el Secreto
+    if password_ingresado != st.secrets["PASSWORD_CLASE"]:
+        st.warning("🔒 Por favor, ingrese la contraseña correcta en la barra lateral para acceder al Coach.")
         st.stop()
         
     try:
